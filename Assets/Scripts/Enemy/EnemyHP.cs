@@ -26,6 +26,8 @@ public class EnemyHP : MonoBehaviour
         if(enemyCurHP <= 0)
         {
             Destroy(gameObject);
+            MyData.score += 100;
+            MyData.kills++;
         }
     }
 }

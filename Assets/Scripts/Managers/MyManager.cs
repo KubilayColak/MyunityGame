@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class MyManager : MonoBehaviour {
-    public GameObject pauseMenu;
+    public GameObject pauseMenu, scoreboard;
     static public bool isPause = false;
     public bool isTrue;
 
@@ -24,6 +24,7 @@ public class MyManager : MonoBehaviour {
                 Time.timeScale = 0;
                 Cursor.lockState = CursorLockMode.Confined;
                 pauseMenu.SetActive(true);
+                scoreboard.SetActive(false);
                 isPause = true;
             }
             else if (Input.GetKeyDown(KeyCode.Escape) && isPause)
@@ -33,6 +34,16 @@ public class MyManager : MonoBehaviour {
                 pauseMenu.SetActive(false);
                 isPause = false;
             }
+
+            if (Input.GetKeyDown(KeyCode.Tab) && !isPause)
+            {
+                scoreboard.SetActive(true);
+            } 
+            else if (Input.GetKeyUp(KeyCode.Tab))
+            {
+                scoreboard.SetActive(false);
+            }
+
         }
     }
 
