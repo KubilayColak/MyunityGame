@@ -5,17 +5,21 @@ using UnityEngine.UI;
 public class EnemyHP : MonoBehaviour
 {
     public int enemyMaxHP = 100;
-    private float enemyCurHP;
+    public float enemyCurHP;
     public Image healthBar;
     public Text healthText;
     public bool isHeadshot = false;
+    public bool isDead = false;
+
+    public Animator anim;
 
     void Start()
     {
        enemyCurHP = enemyMaxHP;
+       anim = GetComponent<Animator>();
     }
 
-    private void Update()
+    void Update()
     {
         healthText.text = "HP: " + enemyCurHP + "/" + enemyMaxHP;
         healthBar.fillAmount = enemyCurHP / (float)enemyMaxHP;
@@ -24,17 +28,21 @@ public class EnemyHP : MonoBehaviour
     public void TakeDamage(int amount)
     {
         enemyCurHP -= amount;
-        if(enemyCurHP <= 0)
+        if (!isDead && enemyCurHP <= 0)
         {
-            Destroy(gameObject);
+            isDead = true;
             if (isHeadshot)
             {
+                anim.SetBool("Headshot Death", true);
                 MyData.score += 300;
                 MyData.headshots++;
+                Destroy(gameObject, 6);
             }
             else
             {
+                anim.SetBool("Death", true);
                 MyData.score += 100;
+                Destroy(gameObject, 6);
             }
             MyData.kills++;
         }

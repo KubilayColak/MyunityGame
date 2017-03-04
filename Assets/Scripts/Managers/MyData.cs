@@ -22,7 +22,7 @@ public class MyData : MonoBehaviour {
     public Text headshotsText;
     public Text roundText;
 
-    private void Start()
+    void Start()
     {
         curAmmo = maxAmmo;
         curHealth = maxHealth;
