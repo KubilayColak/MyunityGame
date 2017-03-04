@@ -4,6 +4,8 @@ using System.Collections;
 
 public class MyData : MonoBehaviour {
 
+    static public int damage = 10;
+
     static public int maxAmmo = 120;
     static public int curAmmo;
     static public int score;

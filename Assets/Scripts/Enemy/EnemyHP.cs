@@ -8,6 +8,7 @@ public class EnemyHP : MonoBehaviour
     private float enemyCurHP;
     public Image healthBar;
     public Text healthText;
+    public bool isHeadshot = false;
 
     void Start()
     {
@@ -20,13 +21,21 @@ public class EnemyHP : MonoBehaviour
         healthBar.fillAmount = enemyCurHP / (float)enemyMaxHP;
     }
 
-    public void Damage(int amount)
+    public void TakeDamage(int amount)
     {
         enemyCurHP -= amount;
         if(enemyCurHP <= 0)
         {
             Destroy(gameObject);
-            MyData.score += 100;
+            if (isHeadshot)
+            {
+                MyData.score += 300;
+                MyData.headshots++;
+            }
+            else
+            {
+                MyData.score += 100;
+            }
             MyData.kills++;
         }
     }
