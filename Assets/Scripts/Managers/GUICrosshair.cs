@@ -15,7 +15,7 @@ public class GUICrosshair : MonoBehaviour {
 	
 
 	void OnGUI () {
-        if (originalOn == true && !MyManager.isPause)
+        if (originalOn == true && !MyManager.isPause && !MyManager.isDead)
         {
             GUI.DrawTexture(pos, crosshair);
         }

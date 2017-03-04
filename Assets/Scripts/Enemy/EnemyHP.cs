@@ -11,7 +11,7 @@ public class EnemyHP : MonoBehaviour
     public bool isHeadshot = false;
     public bool isDead = false;
 
-    public Animator anim;
+    Animator anim;
 
     void Start()
     {

@@ -41,7 +41,7 @@ public class ZombieBehavior : MonoBehaviour
 
     void OnCollisionEnter(Collision coll)
     {
-        if (coll.gameObject.tag == "Player" && attackSpeed >= 1)
+        if (coll.gameObject.tag == "Player" && attackSpeed >= 1 && !this.GetComponent<EnemyHP>().isDead)
         {
             Player.GetComponent<PlayerHealth>().TakeDamage(damage);
         }

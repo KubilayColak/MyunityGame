@@ -7,6 +7,7 @@ public class PlayerHealth : MonoBehaviour
 {
     public GameObject damageScreen;
     public Image blood;
+    bool isDead = false;
     float damaged;
 
     void Update()
@@ -17,18 +18,21 @@ public class PlayerHealth : MonoBehaviour
             blood.CrossFadeAlpha(1, 0, false);
         }
         damaged += Time.deltaTime;
-        print(damaged);
     }
 
     public void TakeDamage (int amount)
     {
-        MyData.curHealth -= amount;
-        damageScreen.SetActive(true);
-        blood.CrossFadeAlpha(0, 2f, false);
-        damaged = 0;
-        if(MyData.curHealth <= 0)
+        if (!isDead)
         {
-            SceneManager.LoadScene("Home");
+            MyData.curHealth -= amount;
+            damageScreen.SetActive(true);
+            blood.CrossFadeAlpha(0, 2f, false);
+            damaged = 0;
+            if (MyData.curHealth <= 0)
+            {
+                isDead = true;
+                MyManager.isDead = true;
+            }
         }
     }
 }

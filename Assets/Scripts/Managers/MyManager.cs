@@ -1,10 +1,14 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using System.Collections;
 
 public class MyManager : MonoBehaviour {
-    public GameObject pauseMenu, scoreboard;
+    public GameObject pauseMenu, scoreboard, deathScreen;
+    static public int deathScore, deathKills, deathHeadshots, deathRound;
+    public Text scoreText, killsText, headshotsText, roundText;
     static public bool isPause = false;
+    static public bool isDead = false;
     public bool isTrue;
 
     private void Start()
@@ -19,7 +23,7 @@ public class MyManager : MonoBehaviour {
     {
         if (isTrue)
         {
-            if (Input.GetKeyDown(KeyCode.Escape) && !isPause)
+            if (Input.GetKeyDown(KeyCode.Escape) && !isPause && !isDead)
             {
                 Time.timeScale = 0;
                 Cursor.lockState = CursorLockMode.Confined;
@@ -35,7 +39,7 @@ public class MyManager : MonoBehaviour {
                 isPause = false;
             }
 
-            if (Input.GetKeyDown(KeyCode.Tab) && !isPause)
+            if (Input.GetKeyDown(KeyCode.Tab) && !isPause && !isDead)
             {
                 scoreboard.SetActive(true);
             } 
@@ -44,6 +48,22 @@ public class MyManager : MonoBehaviour {
                 scoreboard.SetActive(false);
             }
 
+            if (isDead)
+            {
+                Cursor.lockState = CursorLockMode.Confined;
+                deathScreen.SetActive(true);
+                scoreboard.SetActive(false);
+
+                deathScore = MyData.score;
+                deathKills = MyData.kills;
+                deathHeadshots = MyData.headshots;
+                deathRound = MyData.round;
+
+                scoreText.text = deathScore.ToString();
+                killsText.text = deathKills.ToString();
+                headshotsText.text = deathHeadshots.ToString();
+                roundText.text = deathRound.ToString();
+            }
         }
     }
 
@@ -58,6 +78,7 @@ public class MyManager : MonoBehaviour {
         Cursor.lockState = CursorLockMode.Locked;
         pauseMenu.SetActive(false);
         isPause = false;
+        isDead = false;
     }
 
     public void onHome()
@@ -65,6 +86,7 @@ public class MyManager : MonoBehaviour {
         SceneManager.LoadScene("Home");
         Time.timeScale = 1;
         isPause = false;
+        isDead = false;
     }
 
     public void onLoad()
@@ -72,5 +94,6 @@ public class MyManager : MonoBehaviour {
         SceneManager.LoadScene("Castle");
         Time.timeScale = 1;
         isPause = false;
+        isDead = false;
     }
 }

@@ -8,6 +8,7 @@ public class MyData : MonoBehaviour {
 
     static public int maxAmmo = 120;
     static public int curAmmo;
+    static public int magSize = 30;
     static public int score;
     static public int kills;
     static public int headshots;
@@ -24,17 +25,26 @@ public class MyData : MonoBehaviour {
 
     void Start()
     {
-        curAmmo = maxAmmo;
+        curAmmo = magSize;
         curHealth = maxHealth;
     }
 
     void Update()
     {
         healthText.text = curHealth.ToString();
-        ammoText.text = curAmmo.ToString();
+        ammoText.text = curAmmo.ToString() + "/" + maxAmmo.ToString();
         scoreText.text = score.ToString();
         killsText.text = kills.ToString();
         headshotsText.text = headshots.ToString();
         roundText.text = round.ToString();
+
+        if (MyManager.isDead)
+        {
+            curHealth = 0;
+        }
+        if (maxAmmo <= 0)
+        {
+            maxAmmo = 0;
+        }
     }
 }

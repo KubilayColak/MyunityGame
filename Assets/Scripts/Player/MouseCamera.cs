@@ -21,7 +21,7 @@ public class MouseCamera : MonoBehaviour
 
     void Update()
     {
-        if (!MyManager.isPause)
+        if (!MyManager.isPause && !MyManager.isDead)
         {
             var targetOrientation = Quaternion.Euler(targetDirection);
             var targetCharacterOrientation = Quaternion.Euler(targetCharacterDirection);
