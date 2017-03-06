@@ -3,7 +3,7 @@ using System.Collections;
 
 public class PlayerShoot : MonoBehaviour
 {
-    public GameObject bullet, bmuzzle;
+    public GameObject bullet, bmuzzle, mag;
     public int bulletSpeed = 30;
     float shootSpeed = 1;
     float reloadTime = 2;
@@ -23,10 +23,13 @@ public class PlayerShoot : MonoBehaviour
         {
             reloading = true;
             reloadTime = 0;
+            AudioSource reloadSound = mag.GetComponent<AudioSource>();
+            reloadSound.Play();
             //anim.SetBool("Reloading", true);
         } 
-        if (reloading &&  reloadTime >= 2)
+        if (reloading &&  reloadTime >= 1)
         {
+            
             Reload();
             reloading = false;
             //anim.SetBool("Reloading", false);
