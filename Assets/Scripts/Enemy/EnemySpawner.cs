@@ -50,7 +50,6 @@ public class EnemySpawner : MonoBehaviour {
                 {
                     // Increases the timer to allow the timed waves to work
                     timeTillWave -= Time.deltaTime;
-                    enemiesRemain.text = "Enemies Left: " + enemiesLeft.ToString();
                     if (waveSpawn)
                     {
                         //spawns an enemy
@@ -94,6 +93,10 @@ public class EnemySpawner : MonoBehaviour {
         }
         if (!text)
         {
+            if (Spawn)
+            {
+                enemiesRemain.text = "Enemies Left: " + enemiesLeft.ToString();
+            }
             starting.text = "Kill Them!";
             countdown += Time.deltaTime;
             if (countdown >= 3)
