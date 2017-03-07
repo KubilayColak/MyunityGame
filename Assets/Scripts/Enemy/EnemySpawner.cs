@@ -3,78 +3,18 @@ using UnityEngine.UI;
 using System.Collections;
 
 public class EnemySpawner : MonoBehaviour {
-
-    /*public GameObject gui, zombie;
-    public int maxSpawned;
-    float roundStart = 10, countdown;
-    public Text starting;
-    static public bool isWave = true, text = true, spawn = false;
-
-    void Update()
-    {
-        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
-        starting.text = roundStart.ToString("F0");
-        if (isWave == true && !MyManager.isPause)
-        {
-            Wave();
-        }
-        if (spawn)
-        {
-            //Spawn();
-        }
-    }
-
-    void Wave()
-    {
-        gui.SetActive(true);
-        roundStart -= Time.deltaTime;
-        if (roundStart <= 0)
-        {
-            roundStart = 99999999999;
-            MyData.round++;
-            spawn = true;
-            text = false;
-        }
-        if (!text)
-        {
-            starting.text = "Kill Them!";
-            countdown += Time.deltaTime;
-            if (countdown >= 3)
-            {
-                gui.SetActive(false);
-            }
-        }
-    }
-
-    void Spawn()
-    {
-        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
-        for (int i = 0; i < maxSpawned; i++)
-        {
-            MyData.round++;
-
-            for (int j = 0; j < 1; j++)
-            {
-                GameObject zombies = Instantiate(zombie, gameObject.transform.position, gameObject.transform.rotation) as GameObject;
-                MyData.round++;
-            }
-        }
-
-        spawn = false;
-    }
-    */
-        
+            
     public enum SpawnTypes
     {
         TimedWave
     }
 
     public GameObject zombie, gui;
-    public Text starting;
+    public Text starting, enemiesRemain;
 
     public int totalEnemy = 10;
     private int numEnemy = 0;
-    private int spawnedEnemy = 0;
+    private int killedEnemy = 0;
     
     private int SpawnID;
     
@@ -82,8 +22,8 @@ public class EnemySpawner : MonoBehaviour {
     static public bool Spawn = true;
     public SpawnTypes spawnType = SpawnTypes.TimedWave;
     // timed wave controls
-    public float waveTimer  = 0.0f;
-    private float timeTillWave = 10.0f, countdown;
+    private float waveTimer  = 0.0f, countdown;
+    public float timeTillWave = 10.0f;
     //Wave controls
     public int totalWaves = 5;
     private int numWaves = 0;
@@ -96,18 +36,21 @@ public class EnemySpawner : MonoBehaviour {
 
     void Update()
     {
-        print(Spawn);
+        int enemiesLeft = totalWaves * 4 - killedEnemy;
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        
         if (Spawn)
         {
             // Spawns enemies in waves but based on time.
             if (spawnType == SpawnTypes.TimedWave)
             {
-                starting.text = timeTillWave.ToString("F0");
+                starting.text = TimeTillWave.ToString("F0");
                 // checks if the number of waves is bigger than the total waves
                 if (numWaves <= totalWaves)
                 {
                     // Increases the timer to allow the timed waves to work
                     timeTillWave -= Time.deltaTime;
+                    enemiesRemain.text = "Enemies Left: " + enemiesLeft.ToString();
                     if (waveSpawn)
                     {
                         //spawns an enemy
@@ -116,6 +59,7 @@ public class EnemySpawner : MonoBehaviour {
                     // checks if the time is equal to the time required for a new wave
                     if (timeTillWave <= waveTimer)
                     {
+                        
                         text = false;
                         // enables the wave spawner
                         waveSpawn = true;
@@ -129,12 +73,18 @@ public class EnemySpawner : MonoBehaviour {
                     if (numEnemy >= totalEnemy)
                     {
                         // diables the wave spawner
+                        
                         waveSpawn = false;
                     }
                 }
-                else
+                else if (numWaves >= totalWaves && enemiesLeft <= 0)
                 {
+                    enemiesLeft = 0;
+                    killedEnemy = 0;
+                    numWaves = 0;
+                    totalWaves++;
                     Spawn = false;
+                    gui.SetActive(true);
                 }
             }
         }
@@ -149,18 +99,20 @@ public class EnemySpawner : MonoBehaviour {
             if (countdown >= 3)
             {
                 gui.SetActive(false);
-                text = true;
             }
-        } 
+        }        
     }
     // spawns an enemy based on the enemy level that you selected
     private void spawnEnemy()
     {
-        GameObject Enemy = (GameObject)Instantiate(zombie, gameObject.transform.position, Quaternion.identity);
-        Enemy.SendMessage("setName", SpawnID);
-        // Increase the total number of enemies spawned and the number of spawned enemies
-        numEnemy++;
-        spawnedEnemy++;
+        GameObject[] enemySpawnSystem = GameObject.FindGameObjectsWithTag("Spawner");
+        foreach (GameObject spawnPoint in enemySpawnSystem)
+        {
+            GameObject Enemy = (GameObject)Instantiate(zombie, spawnPoint.transform.position, Quaternion.identity);
+            Enemy.SendMessage("setName", SpawnID);
+            print(SpawnID);
+            numEnemy++;
+        }
     }
     // Call this function from the enemy when it "dies" to remove an enemy count
     public void killEnemy(int sID)
@@ -169,6 +121,7 @@ public class EnemySpawner : MonoBehaviour {
         if (SpawnID == sID)
         {
             numEnemy--;
+            killedEnemy++;
         }
     }
     //enable the spawner based on spawnerID

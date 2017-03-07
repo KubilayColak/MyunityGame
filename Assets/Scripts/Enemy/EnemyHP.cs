@@ -19,7 +19,7 @@ public class EnemyHP : MonoBehaviour
     {
         enemyCurHP = enemyMaxHP;
         anim = GetComponent<Animator>();
-        objSpawn = (GameObject)GameObject.FindWithTag("Spawner");
+        objSpawn = (GameObject)GameObject.FindWithTag("Spawn");
     }
 
     void Update()
