@@ -4,6 +4,8 @@ using UnityEngine.UI;
 
 public class EnemyHP : MonoBehaviour
 {
+    private GameObject objSpawn;
+    private int SpawnerID;
     public int enemyMaxHP = 100;
     public float enemyCurHP;
     public Image healthBar;
@@ -15,8 +17,9 @@ public class EnemyHP : MonoBehaviour
 
     void Start()
     {
-       enemyCurHP = enemyMaxHP;
-       anim = GetComponent<Animator>();
+        enemyCurHP = enemyMaxHP;
+        anim = GetComponent<Animator>();
+        objSpawn = (GameObject)GameObject.FindWithTag("Spawner");
     }
 
     void Update()
@@ -30,6 +33,7 @@ public class EnemyHP : MonoBehaviour
         enemyCurHP -= amount;
         if (!isDead && enemyCurHP <= 0)
         {
+            objSpawn.BroadcastMessage("killEnemy", SpawnerID);
             isDead = true;
             if (isHeadshot)
             {
@@ -46,5 +50,10 @@ public class EnemyHP : MonoBehaviour
             }
             MyData.kills++;
         }
+    }
+
+    void setName(int sName)
+    {
+        SpawnerID = sName;
     }
 }

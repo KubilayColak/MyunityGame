@@ -31,13 +31,12 @@ public class PlayerShoot : MonoBehaviour
             reloading = false;
             //anim.SetBool("Reloading", false);
         }
-        if (Input.GetMouseButton(0) && !MyManager.isPause && !MyManager.isDead && shootSpeed >= 0.1 && MyData.curAmmo > 0 && !reloading)
+        if (Input.GetMouseButton(0) && !MyManager.isPause && !MyManager.isDead && EnemySpawner.Spawn && MyData.curAmmo > 0 && !reloading && shootSpeed >= 0.1)
         {
             Shoot();
         }
         shootSpeed += Time.deltaTime;
         reloadTime += Time.deltaTime;
-        print(reloadTime);
     }
 
     void Reload()
