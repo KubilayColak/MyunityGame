@@ -15,7 +15,9 @@ public class EnemySpawner : MonoBehaviour {
     public int totalEnemy = 10;
     private int numEnemy = 0;
     private int killedEnemy = 0;
-    
+    private int enemiesLeft;
+
+
     private int SpawnID;
     
     private bool waveSpawn = false, text = true;
@@ -25,8 +27,8 @@ public class EnemySpawner : MonoBehaviour {
     private float waveTimer  = 0.0f, countdown;
     public float timeTillWave = 10.0f;
     //Wave controls
-    public int totalWaves = 5;
-    private int numWaves = 0;
+    public int totalWaves;
+    private int numWaves;
 
     void Start()
     {
@@ -36,11 +38,11 @@ public class EnemySpawner : MonoBehaviour {
 
     void Update()
     {
-        int enemiesLeft = totalWaves * 4 - killedEnemy;
-        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
         
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
         if (Spawn)
         {
+            enemiesLeft = totalWaves * 4 - killedEnemy;
             // Spawns enemies in waves but based on time.
             if (spawnType == SpawnTypes.TimedWave)
             {
@@ -58,12 +60,18 @@ public class EnemySpawner : MonoBehaviour {
                     // checks if the time is equal to the time required for a new wave
                     if (timeTillWave <= waveTimer)
                     {
-                        
                         text = false;
                         // enables the wave spawner
                         waveSpawn = true;
                         // sets the time back to zero
-                        timeTillWave = 10.0f;
+                        if (MyData.round <= 5)
+                        {
+                            timeTillWave = 10.0f;
+                        }
+                        if (MyData.round <= 10)
+                        {
+                            timeTillWave = 15.0f;
+                        }
                         // increases the number of waves
                         numWaves++;
                         // A hack to get it to spawn the same number of enemies regardless of how many have been killed
@@ -72,24 +80,35 @@ public class EnemySpawner : MonoBehaviour {
                     if (numEnemy >= totalEnemy)
                     {
                         // diables the wave spawner
-                        
                         waveSpawn = false;
                     }
                 }
-                else if (numWaves >= totalWaves && enemiesLeft <= 0)
+                else
                 {
-                    enemiesLeft = 0;
-                    killedEnemy = 0;
-                    numWaves = 0;
-                    totalWaves++;
-                    Spawn = false;
-                    gui.SetActive(true);
+                    if (enemiesLeft <= 0)
+                    {
+                        if (MyData.round <= 5)
+                        {
+                            totalWaves = 0;
+                        }
+                        if (MyData.round <= 10)
+                        {
+                            totalWaves = 1;
+                        }
+                        totalWaves++;
+                        enemiesLeft = 0;
+                        killedEnemy = 0;
+                        Spawn = false;
+                        MyData.round++;
+                        numWaves = 1;
+                    }
                 }
             }
         }
         if (text)
         {
             gui.SetActive(true);
+
         }
         if (!text)
         {

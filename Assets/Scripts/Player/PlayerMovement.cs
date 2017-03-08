@@ -33,7 +33,6 @@ public class PlayerMovement : MonoBehaviour
                 transform.position = center.position;
                 gameObject.GetComponentInChildren<MouseCamera>().enabled = true;
                 EnemySpawner.Spawn = true;
-                MyData.round++;
             }
         }
     }

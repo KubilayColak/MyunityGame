@@ -37,6 +37,10 @@ public class ZombieBehavior : MonoBehaviour
         {
             speed = 0;
         }
+        if (MyData.round >= 5)
+        {
+            speed = 3;
+        }
     }
 
     void OnCollisionEnter(Collision coll)
