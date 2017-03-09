@@ -8,7 +8,15 @@ public class PlayerMovement : MonoBehaviour
     float dis;
     public int speed;
     bool canMove = false;
-    
+    static public bool arrowClicked = false;
+
+    RaycastHit hit;
+
+    void Start()
+    {
+        hit = new RaycastHit();
+    }
+
     void Update()
     {
         if (!EnemySpawner.Spawn && !MyManager.isPause && !MyManager.isDead)
@@ -17,9 +25,14 @@ public class PlayerMovement : MonoBehaviour
             var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition).y;
             target = FindClosest().transform;
             dis = (Vector3.Distance(transform.position, target.position));
-            if (Input.GetMouseButtonDown(0) && mousePos <= 3.825)
+            if (Input.GetMouseButtonDown(0))
+            {
+                Click();
+            }
+            if (arrowClicked)
             {
                 canMove = true;
+                arrowClicked = false;
             }
             if (canMove)
             {
@@ -33,6 +46,18 @@ public class PlayerMovement : MonoBehaviour
                 transform.position = center.position;
                 gameObject.GetComponentInChildren<MouseCamera>().enabled = true;
                 EnemySpawner.Spawn = true;
+            }
+        }
+    }
+
+    void Click()
+    {
+        Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+        if (Physics.Raycast(ray, out hit, 100.0f))
+        {
+            if (hit.collider.gameObject.tag == "Arrow")
+            {
+                PlayerMovement.arrowClicked = true;
             }
         }
     }
