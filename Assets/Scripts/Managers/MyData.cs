@@ -6,7 +6,7 @@ public class MyData : MonoBehaviour {
 
     static public int damage = 10;
 
-    static public int maxAmmo = 120;
+    static public int maxAmmo = 1000;
     static public int curAmmo;
     static public int magSize = 30;
     static public int score;
@@ -16,12 +16,7 @@ public class MyData : MonoBehaviour {
 
     public int maxHealth = 100;
     static public int curHealth;
-    public Text healthText;
-    public Text ammoText;
-    public Text scoreText;
-    public Text killsText;
-    public Text headshotsText;
-    public Text roundText;
+    public Text healthText, ammoText, scoreText, killsText, headshotsText, roundText, roundText2;
 
     void Start()
     {
@@ -37,6 +32,7 @@ public class MyData : MonoBehaviour {
         killsText.text = kills.ToString();
         headshotsText.text = headshots.ToString();
         roundText.text = round.ToString();
+        roundText2.text = round.ToString();
 
         if (MyManager.isDead)
         {
